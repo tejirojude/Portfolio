@@ -30,7 +30,10 @@ import PsychologyIcon from '@mui/icons-material/Psychology';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MenuIcon from '@mui/icons-material/Menu';
 import DescriptionIcon from '@mui/icons-material/Description';
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
+import ContactForm from './components/ContactForm';
+
+const Services = lazy(() => import('./sections/Services'));
 
 const backgroundImage = 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80'; // Example Unsplash image
 
@@ -430,72 +433,9 @@ function App() {
         </Container>
       </Box>
 
-      {/* Services Section */}
-      <Box id="services" sx={{ py: 10, background: 'linear-gradient(135deg, #0a0e27 0%, #1e293b 100%)' }}>
-        <Container maxWidth="lg">
-          <Typography variant="h2" component="h2" textAlign="center" color="white" gutterBottom sx={{ mb: 8 }}>
-            Expert Services
-          </Typography>
-          <Grid container spacing={4} justifyContent="center">
-            {[
-              {
-                title: "Business Setup & Launch",
-                description: "Step-by-step guidance to establish your domiciliary care service, from registration to readiness.",
-                icon: <BusinessIcon sx={{ fontSize: 50, color: '#00d9ff' }} />
-              },
-              {
-                title: "CQC & Ofsted Excellence", 
-                description: "Hands-on support to meet and exceed regulatory standards with policies, audits, and compliance frameworks.",
-                icon: <VerifiedUserIcon sx={{ fontSize: 50, color: '#8b5cf6' }} />
-              },
-              {
-                title: "Digital Integration",
-                description: "Tech-forward strategies for record-keeping, scheduling, and data analytics tailored to your service.",
-                icon: <SettingsIcon sx={{ fontSize: 50, color: '#ff6b35' }} />
-              },
-              {
-                title: "Team Development & Training",
-                description: "Staff inductions, safeguarding training, PBS approaches, and conflict resolution to build strong teams.",
-                icon: <GroupIcon sx={{ fontSize: 50, color: '#00d9ff' }} />
-              },
-              {
-                title: "Specialist Support",
-                description: "Support models for individuals with autism, learning disabilities, mental health conditions, and complex needs.",
-                icon: <PsychologyIcon sx={{ fontSize: 50, color: '#8b5cf6' }} />
-              },
-              {
-                title: "Quality Assurance & Audits",
-                description: "Robust quality assurance processes, outcome-based care planning, and ongoing service reviews.",
-                icon: <CheckCircleIcon sx={{ fontSize: 50, color: '#ff6b35' }} />
-              }
-            ].map((service, index) => (
-              <Grid item xs={12} md={6} lg={4} key={index}>
-                <Card elevation={6} sx={{ 
-                  height: '100%', 
-                  borderRadius: 4,
-                  transform: 'perspective(1000px) rotateX(5deg)',
-                  '&:hover': {
-                    transform: 'perspective(1000px) rotateX(0deg) translateY(-10px)',
-                  },
-                  transition: 'all 0.4s ease'
-                }}>
-                  <CardContent sx={{ p: 4, textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column' }}>
-                    <Box sx={{ mb: 3 }}>
-                      {service.icon}
-                    </Box>
-                    <Typography variant="h5" component="h3" gutterBottom color="primary" fontWeight={600} sx={{ mb: 2 }}>
-                      {service.title}
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: '#94a3b8', flexGrow: 1 }}>
-                      {service.description}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </Box>
+      <Suspense fallback={<Box sx={{ py: 10, textAlign: 'center' }}><Typography color="white">Loading services…</Typography></Box>}>
+        <Services />
+      </Suspense>
 
       {/* Contact Section */}
       <Box id="contact" sx={{ py: 10, background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)' }}>
@@ -519,60 +459,7 @@ function App() {
               },
               transition: 'all 0.4s ease'
             }}>
-            <Grid container spacing={4} justifyContent="center">
-              <Grid item xs={12} sm={6}>
-                <Box sx={{ 
-                  p: 3, 
-                  borderRadius: 3,
-                  background: 'linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)',
-                  border: '1px solid rgba(0, 217, 255, 0.2)',
-                  '&:hover': {
-                    transform: 'translateY(-5px)',
-                    boxShadow: '0 15px 35px rgba(0, 217, 255, 0.2)',
-                  },
-                  transition: 'all 0.3s ease'
-                }}>
-                  <Typography variant="h6" sx={{ color: '#00d9ff', mb: 1 }}>📧 Email</Typography>
-                  <Typography variant="body1" sx={{ color: 'white' }}>jude@ablewaysupport.co.uk</Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Box sx={{ 
-                  p: 3, 
-                  borderRadius: 3,
-                  background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(255, 107, 53, 0.1) 100%)',
-                  border: '1px solid rgba(139, 92, 246, 0.2)',
-                  '&:hover': {
-                    transform: 'translateY(-5px)',
-                    boxShadow: '0 15px 35px rgba(139, 92, 246, 0.2)',
-                  },
-                  transition: 'all 0.3s ease'
-                }}>
-                  <Typography variant="h6" sx={{ color: '#8b5cf6', mb: 1 }}>📞 Phone</Typography>
-                  <Typography variant="body1" sx={{ color: 'white' }}>07706 782821</Typography>
-                </Box>
-              </Grid>
-            </Grid>
-            <Button 
-              variant="contained" 
-              size="large" 
-              href="https://wa.me/447706782821"
-              target="_blank"
-              sx={{ 
-                mt: 4, 
-                py: 2,
-                px: 6,
-                fontSize: '1.1rem',
-                fontWeight: 600,
-                borderRadius: '12px',
-                '&:hover': {
-                  transform: 'translateY(-2px)',
-                },
-                transition: 'all 0.3s ease'
-              }}
-            >
-              Get In Touch Today
-            </Button>
+              <ContactForm />
             </Paper>
           </Box>
         </Container>
